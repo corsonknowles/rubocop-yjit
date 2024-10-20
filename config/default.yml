@@ -1,0 +1,19 @@
+Yjit/NewCopName:
+  Description: 'TODO: Write a description of the cop.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+inherit_mode:
+  merge:
+  - Exclude
+
+# Performance/CollectionLiteralInLoop:
+#   Enabled: true
+
+Yjit/AllocationsInLoops:
+  Description: >- 
+                  Checks for some kinds of assignments in loops. 
+                  Cumulative assignment can be very slow and should 
+                  not be used in performance-critical code.
+  Enabled: pending
+  VersionAdded: '<<next>>'

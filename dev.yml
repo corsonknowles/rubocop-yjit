@@ -1,0 +1,11 @@
+name: "rubocop_yjit"
+
+type: "ruby"
+
+up:
+  - ruby
+  - "bundler"
+
+commands:
+  test:   "bin/rspec"
+  style:  "bin/rubocop"

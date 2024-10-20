@@ -1,0 +1,44 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop/cop/internal_affairs
+  - rubocop/performance
+
+AllCops:
+  Exclude:
+    - vendor/**/*
+  NewCops: disable
+  SuggestExtensions: false
+
+InternalAffairs:
+  Enabled: true
+
+Naming/FileName:
+  Exclude:
+  - lib/rubocop-yjit.rb
+
+Layout/LineLength:
+  IgnoreCopDirectives: true
+
+InternalAffairs/UndefinedConfig:
+  Enabled: false # Bug in implementation fails to find our configs
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/MethodLength:
+  Max: 20
+
+Style/StringConcatenation:
+  Enabled: false
+
+Style/SlicingWithRange:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - '**/*.rake'
+
+Style/FormatStringToken:
+  Enabled: false # this Cop is marked safe autocorrect but it is not
