@@ -44,7 +44,7 @@ gem install rubocop-yjit
 
 ## Usage
 
-You need to tell RuboCop to load the yjit extension. There are three ways to do this:
+You need to tell RuboCop to load this YJIT extension. There are three ways to do this:
 
 ### RuboCop configuration file
 
@@ -62,7 +62,7 @@ require:
   - rubocop-yjit
 ```
 
-Now you can run `rubocop` and it will automatically load the RuboCop yjit cops together with the standard cops.
+Now you can run `rubocop` and it will automatically load the RuboCop-Yjit cops together with the standard cops.
 
 ### Command line
 
@@ -101,7 +101,7 @@ Yjit cops support the following versions:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/corsonknowles/rubocop-Yjit. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the standard OSS norms of collegiality.
+Bug reports and pull requests are welcome on GitHub at https://github.com/corsonknowles/rubocop-yjit. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the standard OSS norms of collegiality.
 
 To contribute a new cop, please use the supplied generator like this:
 

@@ -3,46 +3,67 @@
 module RuboCop
   module Cop
     module Yjit
-      # TODO: Write cop description and example of bad / good code. For every
-      # `SupportedStyle` and unique configuration, there needs to be examples.
-      # Examples must have valid Ruby syntax. Do not use upticks.
+      # Checks for changes in variable types within the same scope.
+      # YJIT performs better when variables have a consistent type.
+      # This applies to both local variables and instance variables.
       #
-      # @safety
-      #   Delete this section if the cop is not unsafe (`Safe: false` or
-      #   `SafeAutoCorrect: false`), or use it to explain how the cop is
-      #   unsafe.
-      #
-      # @example EnforcedStyle: bar (default)
-      #   # Description of the `bar` style.
+      # @example
+      #   # bad
+      #   x = 1
+      #   x = 'string'
       #
       #   # bad
-      #   bad_bar_method
+      #   y = 1.0
+      #   y = [1, 2, 3]
       #
+      #   # good
+      #   x = 1
+      #   x = 2
+      #
+      #   # good
+      #   y = 'string1'
+      #   y = 'string2'
+      #
+      #   # good
+      #   z = [1, 2, 3]
+      #   z = [4, 5, 6]
+      #
+      # @example
       #   # bad
-      #   bad_bar_method(args)
+      #   class Example
+      #     def initialize
+      #       @x = 1
+      #     end
+      #
+      #     def change_x
+      #       @x = 'string'
+      #     end
+      #   end
       #
       #   # good
-      #   good_bar_method
+      #   class Example
+      #     def initialize
+      #       @x = 1
+      #     end
+      #
+      #     def change_x
+      #       @x = 2
+      #     end
+      #   end
       #
       #   # good
-      #   good_bar_method(args)
+      #   class Example
+      #     def initialize
+      #       @x = 'initial'
+      #     end
       #
-      # @example EnforcedStyle: foo
-      #   # Description of the `foo` style.
-      #
-      #   # bad
-      #   bad_foo_method
-      #
-      #   # bad
-      #   bad_foo_method(args)
-      #
-      #   # good
-      #   good_foo_method
-      #
-      #   # good
-      #   good_foo_method(args)
+      #     def change_x
+      #       @x = 'changed'
+      #     end
+      #   end
       class VariableTypeChange < Base
-        MSG = "Avoid changing the type of a variable within the same scope. YJIT performs better when variables have a consistent type."
+        MSG = "Avoid changing the type of a variable within the same scope. " \
+          "YJIT performs better when variables have a consistent type."
 
         def on_lvasgn(node)
           variable_name, value = *node

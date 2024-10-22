@@ -4,7 +4,7 @@
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | - | -
+Enabled | Yes | No | <<next>> | -
 
 Checks for object allocations inside loops which may be hot code paths.
 
@@ -33,11 +33,10 @@ end
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | - | -
+Enabled | Yes | No | <<next>> | -
 
-TODO: Write cop description and example of bad / good code. For every
-`SupportedStyle` and unique configuration, there needs to be examples.
-Examples must have valid Ruby syntax. Do not use upticks.
+Checks for trivial methods that call another method directly.
+They add unnecessary indirection and reduce performance on YJIT.
 
 ### Examples
 
@@ -47,7 +46,9 @@ Examples must have valid Ruby syntax. Do not use upticks.
 # Description of the `bar` style.
 
 # bad
-bad_bar_method
+def some_method
+  another_method
+end
 
 # bad
 bad_bar_method(args)
@@ -80,186 +81,201 @@ good_foo_method(args)
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | - | -
+Enabled | Yes | No | <<next>> | -
 
-TODO: Write cop description and example of bad / good code. For every
-`SupportedStyle` and unique configuration, there needs to be examples.
-Examples must have valid Ruby syntax. Do not use upticks.
+Checks for redefining basic integer operations such as `+`, `-`, `<`, `>`, etc.
+This degrades performance on YJIT.
 
 ### Examples
 
-#### EnforcedStyle: bar (default)
-
 ```ruby
-# Description of the `bar` style.
+# bad
+def +(other)
+  # custom addition logic
+end
 
 # bad
-bad_bar_method
+def -(other)
+  # custom subtraction logic
+end
 
 # bad
-bad_bar_method(args)
+def <(other)
+  # custom less than comparison
+end
 
 # good
-good_bar_method
+def custom_addition(other)
+  # custom addition logic
+end
 
 # good
-good_bar_method(args)
-```
-#### EnforcedStyle: foo
-
-```ruby
-# Description of the `foo` style.
-
-# bad
-bad_foo_method
-
-# bad
-bad_foo_method(args)
+def custom_subtraction(other)
+  # custom subtraction logic
+end
 
 # good
-good_foo_method
-
-# good
-good_foo_method(args)
+def custom_less_than(other)
+  # custom less than comparison
+end
 ```
 
 ## Yjit/RedefiningEquality
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | - | -
+Enabled | Yes | No | <<next>> | -
 
-TODO: Write cop description and example of bad / good code. For every
-`SupportedStyle` and unique configuration, there needs to be examples.
-Examples must have valid Ruby syntax. Do not use upticks.
+Checks for redefinition of `nil?`, `==`, or `!=` methods.
+Redefining these methods can negatively impact YJIT performance.
 
 ### Examples
 
-#### EnforcedStyle: bar (default)
-
 ```ruby
-# Description of the `bar` style.
+# bad
+class MyClass
+  def nil?
+    # custom implementation
+  end
+end
 
 # bad
-bad_bar_method
+class MyClass
+  def ==(other)
+    # custom implementation
+  end
+end
 
 # bad
-bad_bar_method(args)
+class MyClass
+  def !=(other)
+    # custom implementation
+  end
+end
 
 # good
-good_bar_method
+class MyClass
+  def my_nil_checker?(value)
+    value.nil?
+  end
+end
 
 # good
-good_bar_method(args)
-```
-#### EnforcedStyle: foo
-
-```ruby
-# Description of the `foo` style.
-
-# bad
-bad_foo_method
-
-# bad
-bad_foo_method(args)
-
-# good
-good_foo_method
-
-# good
-good_foo_method(args)
+class MyClass
+  def custom_equality(other)
+    # custom implementation that doesn't override ==, !=, or nil?
+  end
+end
 ```
 
 ## Yjit/TrivialMethod
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | - | -
+Enabled | Yes | No | <<next>> | -
 
-TODO: Write cop description and example of bad / good code. For every
-`SupportedStyle` and unique configuration, there needs to be examples.
-Examples must have valid Ruby syntax. Do not use upticks.
+Checks for methods that only return a constant or hash value.
+These methods add unnecessary method call overhead and can be replaced
+with direct constant or hash access.
 
 ### Examples
 
-#### EnforcedStyle: bar (default)
-
 ```ruby
-# Description of the `bar` style.
+# bad
+def answer
+  42
+end
 
 # bad
-bad_bar_method
+def pi
+  3.14159
+end
 
 # bad
-bad_bar_method(args)
+def get_hash
+  { key: 'value' }
+end
 
 # good
-good_bar_method
+ANSWER = 42
 
 # good
-good_bar_method(args)
-```
-#### EnforcedStyle: foo
-
-```ruby
-# Description of the `foo` style.
-
-# bad
-bad_foo_method
-
-# bad
-bad_foo_method(args)
+PI = 3.14159
 
 # good
-good_foo_method
+HASH = { key: 'value' }
 
 # good
-good_foo_method(args)
+def complex_calculation
+  # Some non-trivial logic here
+  result
+end
 ```
 
 ## Yjit/VariableTypeChange
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | - | -
+Enabled | Yes | No | <<next>> | -
 
-TODO: Write cop description and example of bad / good code. For every
-`SupportedStyle` and unique configuration, there needs to be examples.
-Examples must have valid Ruby syntax. Do not use upticks.
+Checks for changes in variable types within the same scope.
+YJIT performs better when variables have a consistent type.
+This applies to both local variables and instance variables.
 
 ### Examples
 
-#### EnforcedStyle: bar (default)
-
 ```ruby
-# Description of the `bar` style.
+# bad
+x = 1
+x = 'string'
 
 # bad
-bad_bar_method
-
-# bad
-bad_bar_method(args)
+y = 1.0
+y = [1, 2, 3]
 
 # good
-good_bar_method
+x = 1
+x = 2
 
 # good
-good_bar_method(args)
+y = 'string1'
+y = 'string2'
+
+# good
+z = [1, 2, 3]
+z = [4, 5, 6]
 ```
-#### EnforcedStyle: foo
-
 ```ruby
-# Description of the `foo` style.
-
 # bad
-bad_foo_method
+class Example
+  def initialize
+    @x = 1
+  end
 
-# bad
-bad_foo_method(args)
+  def change_x
+    @x = 'string'
+  end
+end
 
 # good
-good_foo_method
+class Example
+  def initialize
+    @x = 1
+  end
+
+  def change_x
+    @x = 2
+  end
+end
 
 # good
-good_foo_method(args)
+class Example
+  def initialize
+    @x = 'initial'
+  end
+
+  def change_x
+    @x = 'changed'
+  end
+end
 ```

@@ -25,6 +25,10 @@ RSpec.describe RuboCop::Cop::Yjit::TrivialMethod, :config do
         value = some_hash[:key]
         value * 2
       end
+
+      def hash_asssignment
+        some_hash[:key] = 2
+      end
     RUBY
   end
 end

@@ -3,44 +3,43 @@
 module RuboCop
   module Cop
     module Yjit
-      # TODO: Write cop description and example of bad / good code. For every
-      # `SupportedStyle` and unique configuration, there needs to be examples.
-      # Examples must have valid Ruby syntax. Do not use upticks.
+      # Checks for redefining basic integer operations such as `+`, `-`, `<`, `>`, etc.
+      # This degrades performance on YJIT.
       #
       # @safety
-      #   Delete this section if the cop is not unsafe (`Safe: false` or
-      #   `SafeAutoCorrect: false`), or use it to explain how the cop is
-      #   unsafe.
+      #   Redefining basic integer operations is unsafe and can lead to unexpected behavior.
+      #   There is no safe automatic correction for this issue.
       #
-      # @example EnforcedStyle: bar (default)
-      #   # Description of the `bar` style.
+      # @example
+      #   # bad
+      #   def +(other)
+      #     # custom addition logic
+      #   end
       #
       #   # bad
-      #   bad_bar_method
+      #   def -(other)
+      #     # custom subtraction logic
+      #   end
       #
       #   # bad
-      #   bad_bar_method(args)
+      #   def <(other)
+      #     # custom less than comparison
+      #   end
       #
       #   # good
-      #   good_bar_method
+      #   def custom_addition(other)
+      #     # custom addition logic
+      #   end
       #
       #   # good
-      #   good_bar_method(args)
-      #
-      # @example EnforcedStyle: foo
-      #   # Description of the `foo` style.
-      #
-      #   # bad
-      #   bad_foo_method
-      #
-      #   # bad
-      #   bad_foo_method(args)
+      #   def custom_subtraction(other)
+      #     # custom subtraction logic
+      #   end
       #
       #   # good
-      #   good_foo_method
-      #
-      #   # good
-      #   good_foo_method(args)
+      #   def custom_less_than(other)
+      #     # custom less than comparison
+      #   end
       class RedefinedOperator < Base
         MSG = "Avoid redefining basic integer operations such as `+`, `-`, `<`, `>`, etc." \
           " It degrades performance on YJIT."

@@ -39,6 +39,4 @@ RSpec.describe RuboCop::Cop::Yjit::VariableTypeChange, :config do
       end
     RUBY
   end
-
-
 end

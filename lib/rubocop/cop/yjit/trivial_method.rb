@@ -3,44 +3,40 @@
 module RuboCop
   module Cop
     module Yjit
-      # TODO: Write cop description and example of bad / good code. For every
-      # `SupportedStyle` and unique configuration, there needs to be examples.
-      # Examples must have valid Ruby syntax. Do not use upticks.
+      # Checks for methods that only return a constant or hash value.
+      # These methods add unnecessary method call overhead and can be replaced
+      # with direct constant or hash access.
       #
-      # @safety
-      #   Delete this section if the cop is not unsafe (`Safe: false` or
-      #   `SafeAutoCorrect: false`), or use it to explain how the cop is
-      #   unsafe.
-      #
-      # @example EnforcedStyle: bar (default)
-      #   # Description of the `bar` style.
+      # @example
+      #   # bad
+      #   def answer
+      #     42
+      #   end
       #
       #   # bad
-      #   bad_bar_method
+      #   def pi
+      #     3.14159
+      #   end
       #
       #   # bad
-      #   bad_bar_method(args)
+      #   def get_hash
+      #     { key: 'value' }
+      #   end
       #
       #   # good
-      #   good_bar_method
+      #   ANSWER = 42
       #
       #   # good
-      #   good_bar_method(args)
-      #
-      # @example EnforcedStyle: foo
-      #   # Description of the `foo` style.
-      #
-      #   # bad
-      #   bad_foo_method
-      #
-      #   # bad
-      #   bad_foo_method(args)
+      #   PI = 3.14159
       #
       #   # good
-      #   good_foo_method
+      #   HASH = { key: 'value' }
       #
       #   # good
-      #   good_foo_method(args)
+      #   def complex_calculation
+      #     # Some non-trivial logic here
+      #     result
+      #   end
       class TrivialMethod < Base
         MSG = "Avoid methods that only return a constant or hash value. They add unnecessary method call overhead."
 

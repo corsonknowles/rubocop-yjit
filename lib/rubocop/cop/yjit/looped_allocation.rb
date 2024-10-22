@@ -43,8 +43,6 @@ module RuboCop
 
         def check_for_allocation(node)
           assigned_value = node.children[1]
-
-          # Detect common object allocations (e.g., array, hash, string, or custom object with `Class.new`)
           return unless allocation?(assigned_value)
 
           add_offense(node)

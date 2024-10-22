@@ -1,8 +1,3 @@
-Yjit/NewCopName:
-  Description: 'TODO: Write a description of the cop.'
-  Enabled: pending
-  VersionAdded: '<<next>>'
-
 inherit_mode:
   merge:
   - Exclude
@@ -10,10 +5,46 @@ inherit_mode:
 # Performance/CollectionLiteralInLoop:
 #   Enabled: true
 
-Yjit/AllocationsInLoops:
+Yjit/LoopedAllocation:
   Description: >- 
                   Checks for some kinds of assignments in loops. 
                   Cumulative assignment can be very slow and should 
                   not be used in performance-critical code.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+Yjit/MethodIndirection:
+  Description: >- 
+                  Checks for trivial methods that call another method directly.
+                  These add unnecessary indirection and reduce performance on YJIT.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+Yjit/RedefinedOperator:
+  Description: >- 
+                  Checks for redefining basic integer operations such as `+`, `-`, `<`, `>`, etc.
+                  This degrades performance on YJIT.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+Yjit/RedefiningEquality:
+  Description: >- 
+                  Checks for redefining equality operations such as `==`, `eql?`, and `hash`.
+                  This can lead to unexpected behavior and performance issues with YJIT.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+Yjit/TrivialMethod:
+  Description: >- 
+                  Checks for methods that only return a constant or hash value.
+                  These methods add unnecessary method call overhead and can be replaced
+                  with direct constant or hash access.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+Yjit/VariableTypeChange:
+  Description: >- 
+                  Checks for changes in variable types within the same scope.
+                  YJIT performs better when variables have a consistent type.
   Enabled: pending
   VersionAdded: '<<next>>'

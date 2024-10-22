@@ -28,10 +28,17 @@ RSpec.describe RuboCop::Cop::Yjit::RedefiningEquality, :config do
     RUBY
   end
 
-  it "does not register an offense for other method definitions" do
+  it "does not register an offense for other empty method definitions" do
     expect_no_offenses(<<~RUBY)
       def other_method
-        # logic
+      end
+    RUBY
+  end
+
+  it "does not register an offense for simple nil checking methods" do
+    expect_no_offenses(<<~RUBY)
+      def my_nil_checker?(value)
+        value.nil?
       end
     RUBY
   end

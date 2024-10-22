@@ -19,16 +19,14 @@ RSpec.describe RuboCop::Cop::Yjit::LoopedAllocation, :config do
     RUBY
   end
 
-  it "registers an offense for hash allocation inside a loop" do
+  it "registers an offense for allocations inside a loop" do
     expect_offense(<<~RUBY)
       items.each do
         hash = {}
         ^^^^^^^^^ Avoid object allocations (e.g., array, hash, string, Class.new) inside loops which may be hot code paths.
       end
     RUBY
-  end
 
-  it "registers an offense for string allocation inside a loop" do
     expect_offense(<<~RUBY)
       items.each do
         str = "new string"
@@ -46,7 +44,7 @@ RSpec.describe RuboCop::Cop::Yjit::LoopedAllocation, :config do
     RUBY
   end
 
-  it "registers offenses for allocations inside a map loop" do
+  it "registers offenses for multiple allocations inside a map loop" do
     expect_offense(<<~RUBY)
       items.map do
         hash = {}
@@ -85,14 +83,14 @@ RSpec.describe RuboCop::Cop::Yjit::LoopedAllocation, :config do
 
   it "does not register an offense for empty blocks" do
     expect_no_offenses(<<~RUBY)
-      items.each do
-      end
+      items.each { }
     RUBY
   end
 
   it "does not register an offense for non-enumarable blocks" do
     expect_no_offenses(<<~RUBY)
       items { |item| item }
+      more_items { |item| new_array = [item] }
     RUBY
   end
 end
