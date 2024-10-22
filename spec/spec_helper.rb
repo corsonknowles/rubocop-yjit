@@ -3,7 +3,7 @@
 require "simplecov"
 SimpleCov.start
 
-require "rubocop_yjit"
+require "rubocop-yjit"
 require "rubocop/rspec/support"
 require "debug/prelude"
 

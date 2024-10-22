@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubocop_yjit (0.1.0)
+    rubocop-yjit (0.1.0)
       rubocop (>= 1)
 
 GEM
@@ -82,7 +82,7 @@ DEPENDENCIES
   rspec
   rubocop
   rubocop-performance
-  rubocop_yjit!
+  rubocop-yjit!
   simplecov
   yard
 

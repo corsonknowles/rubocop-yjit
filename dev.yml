@@ -1,4 +1,4 @@
-name: "rubocop_yjit"
+name: "rubocop-yjit"
 
 type: "ruby"
 

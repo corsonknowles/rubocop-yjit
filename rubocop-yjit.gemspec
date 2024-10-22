@@ -3,7 +3,7 @@
 require_relative "lib/rubocop/yjit/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "rubocop_yjit"
+  spec.name          = "rubocop-yjit"
   spec.version       = RuboCop::Yjit::VERSION
   spec.authors       = ["David Corson-Knowles"]
 
