@@ -38,6 +38,7 @@ module RuboCop
           end
         end
         alias on_numblock on_block
+        alias on_itblock on_block
 
         private
 
@@ -53,7 +54,7 @@ module RuboCop
         end
 
         def allocation?(node)
-          node.array_type? || node.hash_type? || node.str_type? || new_type?(node)
+          node.type?(:array, :hash, :str) || new_type?(node)
         end
       end
     end
