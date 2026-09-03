@@ -19,6 +19,15 @@ RSpec.describe RuboCop::Cop::Yjit::LoopedAllocation, :config do
     RUBY
   end
 
+  it "registers an offense for array allocation inside an itblock map", :ruby34 do
+    expect_offense(<<~RUBY)
+      items.map do
+        array = [it]
+        ^^^^^^^^^^^^ Avoid object allocations (e.g., array, hash, string, Class.new) inside loops which may be hot code paths.
+      end
+    RUBY
+  end
+
   it "registers an offense for allocations inside a loop" do
     expect_offense(<<~RUBY)
       items.each do

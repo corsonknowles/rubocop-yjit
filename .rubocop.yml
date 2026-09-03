@@ -1,12 +1,15 @@
 inherit_from: .rubocop_todo.yml
 
-require:
-  - rubocop/cop/internal_affairs
-  - rubocop/performance
+plugins:
+  - rubocop-internal_affairs
+  - rubocop-performance
 
 AllCops:
   Exclude:
     - vendor/**/*
+    # Bundler-generated binstubs; regenerating them would revert any autocorrection.
+    - bin/rspec
+    - bin/rubocop
   NewCops: disable
   SuggestExtensions: false
 
@@ -18,7 +21,7 @@ Naming/FileName:
   - lib/rubocop-yjit.rb
 
 Layout/LineLength:
-  IgnoreCopDirectives: true
+  AllowCopDirectives: true
 
 InternalAffairs/UndefinedConfig:
   Enabled: false # Bug in implementation fails to find our configs
