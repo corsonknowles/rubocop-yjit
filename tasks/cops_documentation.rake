@@ -137,7 +137,6 @@ task generate_cops_documentation: :yard_for_generate_documentation do
       end
     end
   end
-  # rubocop:enable
 
   def to_table(header, content)
     table = [
